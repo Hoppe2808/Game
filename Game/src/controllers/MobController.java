@@ -20,11 +20,13 @@ public class MobController {
 		mobs1.add(new int[] {25, 3});
 		mobs1.add(new int[] {35, 2});
 		mobs1.add(new int[] {70, 1});
+		mobs1.add(new int[] {15, 5});
 		rareMobs1.add(new int[] {65, 2});
 		rareMobs1.add(new int[] {230, 5});
 		mobNames1.add("Slimey");
 		mobNames1.add("Ratty");
 		mobNames1.add("Zwombie");
+		mobNames1.add("Angry Dusty");
 		rareMobNames1.add("Mimic");
 		rareMobNames1.add("Dragear");
 
