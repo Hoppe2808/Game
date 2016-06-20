@@ -17,12 +17,12 @@ public class MobController {
 	
 	public MobController(){
 
-		mobs1.add("25 3 10");
-		mobs1.add("35 2 8");
-		mobs1.add("10 1 13");
-		mobs1.add("15 5 5");
-		rareMobs1.add("65 2 25");
-		rareMobs1.add("230 5 35");
+		mobs1.add("25 3 10 10");
+		mobs1.add("35 2 8 12");
+		mobs1.add("70 1 13 15");
+		mobs1.add("15 5 5 7");
+		rareMobs1.add("65 2 25 20");
+		rareMobs1.add("230 5 35 75");
 		mobNames1.add("Slimey");
 		mobNames1.add("Ratty");
 		mobNames1.add("Zwombie");
@@ -37,12 +37,12 @@ public class MobController {
 			if (chance < 9){
 				number = randomGenerator.nextInt(mobs1.size());
 				String[] splittet = mobs1.get(number).split("\\s+");
-				mob = new Mob(Integer.parseInt(splittet[0]), Integer.parseInt(splittet[1]), Double.parseDouble(splittet[2]));
+				mob = new Mob(Integer.parseInt(splittet[0]), Integer.parseInt(splittet[1]), Double.parseDouble(splittet[2]), Integer.parseInt(splittet[3]));
 				mob.setName(mobNames1.get(number));
 			}else if (chance == 9){
 				number = randomGenerator.nextInt(rareMobs1.size());
 				String[] splittet = rareMobs1.get(number).split("\\s+");
-				mob = new Mob(Integer.parseInt(splittet[0]), Integer.parseInt(splittet[1]), Double.parseDouble(splittet[2]));
+				mob = new Mob(Integer.parseInt(splittet[0]), Integer.parseInt(splittet[1]), Double.parseDouble(splittet[2]), Integer.parseInt(splittet[3]));
 				mob.setName(rareMobNames1.get(number));
 			}
 		}

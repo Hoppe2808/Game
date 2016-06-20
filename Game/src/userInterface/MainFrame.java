@@ -24,6 +24,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -203,8 +204,11 @@ public class MainFrame extends JFrame {
 			progressBar2.setString(Integer.toString(curMob.getHealth()));
 			progressBar2.setValue(curMob.getHealth());
 			if (curMob.getHealth() == 0){
+				if (drop(curMob.getDropChance())){
+					
+				}
 				makeNewMob();
-				uF.addExp(0, 10);
+				uF.addExp(0, curMob.getExp());
 				int xp = uF.getExp()[0];
 				int maxXp = uF.getExp()[1];
 				lblXp.setText("Experience: " + xp + "/" + maxXp);
@@ -248,6 +252,14 @@ public class MainFrame extends JFrame {
 		public int damageCalculation(int damage, int armor){
 			int actualDamage = damage - (int) (0.1 * armor);
 			return actualDamage;
+		}
+		private boolean drop(double dropChance){
+			Random randomGenerator = new Random();
+			int interval = (int) dropChance;
+			if (randomGenerator.nextInt(100) <= interval){
+				return true;
+			}
+			return false;
 		}
 	}
 	class InventoryAction implements ActionListener{
