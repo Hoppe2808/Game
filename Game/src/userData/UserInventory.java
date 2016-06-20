@@ -9,7 +9,10 @@ public class UserInventory {
 	public UserInventory(){
 		this.space = 20;
 	}
-	private void addItem(Item item){
+	public void addItem(Item item){
 		this.items.add(item);
+	}
+	public ArrayList<Item> getItems(){
+		return items;
 	}
 }

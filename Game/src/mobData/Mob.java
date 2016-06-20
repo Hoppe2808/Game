@@ -5,11 +5,13 @@ public class Mob {
 	int maxHp;
 	int dmg;
 	String name;
+	double dropChance;
 	
-	public Mob(int health, int damage){
+	public Mob(int health, int damage, double dropChance){
 		hp = health;
 		maxHp = health;
 		dmg = damage;
+		this.dropChance = dropChance;
 	}
 	public void setHealth(int health){
 		if (hp + health < 0){
@@ -35,5 +37,11 @@ public class Mob {
 	}
 	public String getName(){
 		return this.name;
+	}
+	public double getDropChance() {
+		return dropChance;
+	}
+	public void setDropChance(double dropChance) {
+		this.dropChance = dropChance;
 	}
 }

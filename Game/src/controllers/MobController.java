@@ -7,8 +7,8 @@ import java.util.Random;
 import mobData.Mob;
 
 public class MobController {
-	private ArrayList<int[]> mobs1 = new ArrayList<int[]>();
-	private ArrayList<int[]> rareMobs1 = new ArrayList<int[]>();
+	private ArrayList<String> mobs1 = new ArrayList<String>();
+	private ArrayList<String> rareMobs1 = new ArrayList<String>();
 	private ArrayList<String> mobNames1 = new ArrayList<String>();
 	private ArrayList<String> rareMobNames1 = new ArrayList<String>();
 	Random randomGenerator = new Random();
@@ -17,12 +17,12 @@ public class MobController {
 	
 	public MobController(){
 
-		mobs1.add(new int[] {25, 3});
-		mobs1.add(new int[] {35, 2});
-		mobs1.add(new int[] {70, 1});
-		mobs1.add(new int[] {15, 5});
-		rareMobs1.add(new int[] {65, 2});
-		rareMobs1.add(new int[] {230, 5});
+		mobs1.add("25 3 10");
+		mobs1.add("35 2 8");
+		mobs1.add("10 1 13");
+		mobs1.add("15 5 5");
+		rareMobs1.add("65 2 25");
+		rareMobs1.add("230 5 35");
 		mobNames1.add("Slimey");
 		mobNames1.add("Ratty");
 		mobNames1.add("Zwombie");
@@ -36,11 +36,13 @@ public class MobController {
 			int chance = randomGenerator.nextInt(10);
 			if (chance < 9){
 				number = randomGenerator.nextInt(mobs1.size());
-				mob = new Mob(mobs1.get(number)[0], mobs1.get(number)[1]);
+				String[] splittet = mobs1.get(number).split("\\s+");
+				mob = new Mob(Integer.parseInt(splittet[0]), Integer.parseInt(splittet[1]), Double.parseDouble(splittet[2]));
 				mob.setName(mobNames1.get(number));
 			}else if (chance == 9){
 				number = randomGenerator.nextInt(rareMobs1.size());
-				mob = new Mob(rareMobs1.get(number)[0], rareMobs1.get(number)[1]);
+				String[] splittet = rareMobs1.get(number).split("\\s+");
+				mob = new Mob(Integer.parseInt(splittet[0]), Integer.parseInt(splittet[1]), Double.parseDouble(splittet[2]));
 				mob.setName(rareMobNames1.get(number));
 			}
 		}

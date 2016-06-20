@@ -257,7 +257,7 @@ public class MainFrame extends JFrame {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					try {
-						InventoryFrame inventory = new InventoryFrame(mainFrame);
+						InventoryFrame inventory = new InventoryFrame(mainFrame, iF);
 						inventory.setVisible(true);
 						mainFrame.setVisible(false);
 					} catch (Exception e) {

@@ -1,18 +1,35 @@
 package functionality;
 
 import userData.UserStats;
+
+import java.util.ArrayList;
+
+import userData.Item;
+import userData.UserInventory;
 import userData.UserMenus;
 
 public class UserFunctionality {
 
 	private UserStats uS;
 	private UserMenus uM;
+	private UserInventory uI;
 	
 	public UserFunctionality(){
 		uS = new UserStats();
 		uM = new UserMenus();
+		uI = new UserInventory();
 	}
 	
+	public ArrayList<Item> getUserInventory() {
+		return uI.getItems();
+	}
+
+	public void setuI(UserInventory uI) {
+		this.uI = uI;
+	}
+	public void addItemToInventory(Item item){
+		uI.addItem(item);
+	}
 	public int getUserHealthCurrent(){
 		return uS.getCurHP();
 	}
