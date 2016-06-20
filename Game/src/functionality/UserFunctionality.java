@@ -42,4 +42,23 @@ public class UserFunctionality {
 	public int getMenu(){
 		return uM.getMenu();
 	}
+	public int getLevel(){
+		return uS.getLevel();
+	}
+	public void levelUp(){
+		uS.levelUp();
+		uS.setMaxHP((int) (uS.getMaxHP() * 0.25));
+		uS.setCurHP(uS.getMaxHP());
+		uS.setBaseDmg((int) (uS.getBaseDmg() * 0.1));
+		uS.setArmor((int) (uS.getArmor() * 0.01));
+	}
+	public void addExp(int id, int exp){
+		uS.addExp(id, exp);
+	}
+	public void setExp(int[] exp){
+		uS.setExp(exp);
+	}
+	public int[] getExp(){
+		return uS.getExp();
+	}
 }
