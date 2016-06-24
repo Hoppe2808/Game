@@ -13,6 +13,7 @@ public class UserFunctionality {
 	private UserStats uS;
 	private UserMenus uM;
 	private UserInventory uI;
+	double armorBuffer = 0;
 	
 	public UserFunctionality(){
 		uS = new UserStats();
@@ -64,10 +65,18 @@ public class UserFunctionality {
 	}
 	public void levelUp(){
 		uS.levelUp();
-		uS.setMaxHP((int) (uS.getMaxHP() * 0.25));
+		uS.setMaxHP((int) (uS.getMaxHP() * 0.30));
 		uS.setCurHP(uS.getMaxHP());
-		uS.setBaseDmg((int) (uS.getBaseDmg() * 0.1));
-		uS.setArmor((int) (uS.getArmor() * 0.01));
+		uS.setBaseDmg((int) (uS.getBaseDmg() * 0.15));
+		if (uS.getArmor() < 100){
+			armorBuffer = armorBuffer + 0.5;
+			if (armorBuffer == 1) {
+				uS.setArmor(1);
+				armorBuffer = 0;
+			}
+		} else {
+			uS.setArmor((int) (uS.getArmor() * 0.01));
+		}
 	}
 	public void addExp(int id, int exp){
 		uS.addExp(id, exp);

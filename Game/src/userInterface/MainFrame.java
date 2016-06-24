@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Frame;
+import java.awt.Image;
 
 import mobData.Mob;
 import mobData.MobImages;
@@ -27,10 +28,12 @@ import java.io.IOException;
 import java.util.Random;
 
 import javax.swing.Action;
+import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
 import javax.swing.JProgressBar;
 import javax.swing.UIManager;
 import javax.swing.JSplitPane;
+import javax.swing.KeyStroke;
 import javax.swing.border.BevelBorder;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -92,6 +95,8 @@ public class MainFrame extends JFrame {
 		JButton btnFightButton = new JButton("Fight");
 		btnFightButton.setAction(action);
 		playerActions.add(btnFightButton);
+		playerActions.getRootPane().setDefaultButton(btnFightButton);
+		
 		JButton btnInventoryButton = new JButton("Inventory");
 		btnInventoryButton.addActionListener(new InventoryAction());
 		playerActions.add(btnInventoryButton);
@@ -127,7 +132,10 @@ public class MainFrame extends JFrame {
 		JPanel mobPanel = new JPanel();
 		mobPanel.setBounds(5, 69, 459, 429);
 		mobPic = mI.getMobImage(curMob.getName());
-		picLabel = new JLabel(new ImageIcon(mobPic));
+		picLabel = new JLabel();
+		Image scaledImage = mobPic.getScaledInstance(459,429,Image.SCALE_SMOOTH);
+		ImageIcon icon = new ImageIcon(scaledImage);
+		picLabel.setIcon(icon);
 		mobPanel.add(picLabel);
 		contentPane.add(mobPanel);
 		
@@ -175,7 +183,9 @@ public class MainFrame extends JFrame {
 		progressBar2.setString(Integer.toString(curMob.getHealth()));
 		progressBar2.setForeground(Color.green);
 		mobPic = mI.getMobImage(curMob.getName());
-		picLabel.setIcon(new ImageIcon(mobPic));
+		Image scaledImage = mobPic.getScaledInstance(459,429,Image.SCALE_SMOOTH);
+		ImageIcon icon = new ImageIcon(scaledImage);
+		picLabel.setIcon(icon);
 		lblMobname.setText(curMob.getName());
 		lblMobDamage.setText("Mob Damage: " + curMob.getDamage());
 	}
@@ -192,75 +202,81 @@ public class MainFrame extends JFrame {
 			putValue(SHORT_DESCRIPTION, "Press to attack the enemy");
 		}
 		public void actionPerformed(ActionEvent e) {
-			progressBar.setBackground(Color.gray);
-			progressBar2.setBackground(Color.gray);
-			curMob.setHealth(-damageCalculation(uF.getUserDMG(), 0));
-			uF.setUserHealthCurrent(-damageCalculation(curMob.getDamage(), uF.getUserArmor()));
-			userCurHealth = uF.getUserHealthCurrent();
-			progressBarColor();
-			progressBar.setString(Integer.toString(userCurHealth));
-			progressBar.setValue(userCurHealth);
-			
-			progressBar2.setString(Integer.toString(curMob.getHealth()));
-			progressBar2.setValue(curMob.getHealth());
-			if (curMob.getHealth() == 0){
-				if (drop(curMob.getDropChance())){
-					
-				}
-				makeNewMob();
-				uF.addExp(0, curMob.getExp());
-				int xp = uF.getExp()[0];
-				int maxXp = uF.getExp()[1];
-				lblXp.setText("Experience: " + xp + "/" + maxXp);
-				if (xp == maxXp){
-					levelUp(maxXp);
-				}
+			attackFlow();
+		}
+	}
+	private void attackFlow() {
+		progressBar.setBackground(Color.gray);
+		progressBar2.setBackground(Color.gray);
+		curMob.setHealth(-damageCalculation(uF.getUserDMG(), 0));
+		uF.setUserHealthCurrent(-damageCalculation(curMob.getDamage(), uF.getUserArmor()));
+		userCurHealth = uF.getUserHealthCurrent();
+		progressBarColor();
+		progressBar.setString(Integer.toString(userCurHealth));
+		progressBar.setValue(userCurHealth);
+		
+		progressBar2.setString(Integer.toString(curMob.getHealth()));
+		progressBar2.setValue(curMob.getHealth());
+		if (curMob.getHealth() == 0){
+			if (drop(curMob.getDropChance())){
+				
+			}
+			makeNewMob();
+			uF.addExp(0, curMob.getExp());
+			int xp = uF.getExp()[0];
+			int maxXp = uF.getExp()[1];
+			lblXp.setText("Experience: " + xp + "/" + maxXp);
+			if (xp >= maxXp){
+				levelUp(maxXp);
 			}
 		}
-		private void progressBarColor() {
-			if (userCurHealth <= userMaxHealth/2){
-				if (userCurHealth <= userMaxHealth/4){
-					progressBar.setForeground(Color.red);
-				}else {
-					progressBar.setForeground(Color.orange);
-				}
-			} else {
-				progressBar.setForeground(Color.green);
+	}
+	private void progressBarColor() {
+		if (userCurHealth <= userMaxHealth/2){
+			if (userCurHealth <= userMaxHealth/4){
+				progressBar.setForeground(Color.red);
+			}else {
+				progressBar.setForeground(Color.orange);
 			}
-			if (curMob.getHealth() <= curMob.getHealth()/2){
-				if (curMob.getHealth() <= curMob.getHealth()/4){
-					progressBar2.setForeground(Color.red);
-				}else {
-					progressBar2.setForeground(Color.orange);
-				}
-			} else {
-				progressBar2.setForeground(Color.green);
-			}
-		}
-		private void levelUp(int maxXp) {
-			uF.levelUp();
-			uF.setExp(new int[] {0, maxXp + 50});
-			lblLevel.setText("Level: " + uF.getLevel());
-			lblXp.setText("Experience: " + uF.getExp()[0] + "/" + uF.getExp()[1]);
-			lblDmg.setText("DMG: " + uF.getUserDMG());
-			lblArmor.setText("Armor: " + uF.getUserArmor());
-			progressBar.setMaximum(uF.getUserHealthMax());
-			progressBar.setString(Integer.toString(uF.getUserHealthMax()));
-			progressBar.setValue(uF.getUserHealthMax());
+		} else {
 			progressBar.setForeground(Color.green);
 		}
-		public int damageCalculation(int damage, int armor){
-			int actualDamage = damage - (int) (0.1 * armor);
-			return actualDamage;
-		}
-		private boolean drop(double dropChance){
-			Random randomGenerator = new Random();
-			int interval = (int) dropChance;
-			if (randomGenerator.nextInt(100) <= interval){
-				return true;
+		if (curMob.getHealth() <= curMob.getHealth()/2){
+			if (curMob.getHealth() <= curMob.getHealth()/4){
+				progressBar2.setForeground(Color.red);
+			}else {
+				progressBar2.setForeground(Color.orange);
 			}
-			return false;
+		} else {
+			progressBar2.setForeground(Color.green);
 		}
+	}
+	private void levelUp(int maxXp) {
+		uF.levelUp();
+		uF.setExp(new int[] {0, maxXp + 50});
+		lblLevel.setText("Level: " + uF.getLevel());
+		lblXp.setText("Experience: " + uF.getExp()[0] + "/" + uF.getExp()[1]);
+		lblDmg.setText("DMG: " + uF.getUserDMG());
+		lblArmor.setText("Armor: " + uF.getUserArmor());
+		progressBar.setMaximum(uF.getUserHealthMax());
+		progressBar.setString(Integer.toString(uF.getUserHealthMax()));
+		progressBar.setValue(uF.getUserHealthMax());
+		progressBar.setForeground(Color.green);
+	}
+	public int damageCalculation(int damage, int armor){
+		int actualDamage = damage - (int) (0.1 * armor);
+		if (actualDamage < 1){
+			actualDamage = 1;
+		}
+		return actualDamage;
+	}
+	private boolean drop(double dropChance){
+		Random randomGenerator = new Random();
+		int interval = (int) dropChance;
+		if (randomGenerator.nextInt(100) <= interval){
+			return true;
+		}
+		return false;
 	}
 	class InventoryAction implements ActionListener{
 
