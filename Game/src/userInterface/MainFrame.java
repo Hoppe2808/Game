@@ -8,6 +8,7 @@ import java.awt.Image;
 
 import mobData.Mob;
 import mobData.MobImages;
+import userData.Item;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -47,7 +48,7 @@ public class MainFrame extends JFrame {
 	private JPanel playerActions;
 	private UserFunctionality uF;
 	private MobFunctionality mF;
-	private ItemFunctionality iF;
+	private ItemFunctionality iF = new ItemFunctionality();
 	private final Action action = new SwingAction();
 	JLabel lblMobDamage;
 	JLabel picLabel;
@@ -173,6 +174,19 @@ public class MainFrame extends JFrame {
 		lblXp = new JLabel("Experience: " + uF.getExp()[0] + "/" + uF.getExp()[1]);
 		lblXp.setBounds(497, 69, 191, 14);
 		contentPane.add(lblXp);
+		
+		JLabel lblEquipment = new JLabel("Equipment");
+		lblEquipment.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblEquipment.setBounds(497, 94, 343, 14);
+		contentPane.add(lblEquipment);
+		
+		JLabel lblWeapon = new JLabel("Weapon:");
+		lblWeapon.setBounds(497, 119, 54, 14);
+		contentPane.add(lblWeapon);
+		
+		JLabel lblEquipWeapon = new JLabel("New label");
+		lblEquipWeapon.setBounds(561, 119, 46, 14);
+		contentPane.add(lblEquipWeapon);
 	}
 	
 	public void makeNewMob(){
@@ -219,10 +233,11 @@ public class MainFrame extends JFrame {
 		progressBar2.setValue(curMob.getHealth());
 		if (curMob.getHealth() == 0){
 			if (drop(curMob.getDropChance())){
-				
+				System.out.println("Item gotten");
+				uF.addItemToInventory(iF.getRandomItem());
 			}
-			makeNewMob();
 			uF.addExp(0, curMob.getExp());
+			makeNewMob();
 			int xp = uF.getExp()[0];
 			int maxXp = uF.getExp()[1];
 			lblXp.setText("Experience: " + xp + "/" + maxXp);
@@ -285,7 +300,7 @@ public class MainFrame extends JFrame {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					try {
-						InventoryFrame inventory = new InventoryFrame(mainFrame, iF);
+						InventoryFrame inventory = new InventoryFrame(mainFrame, uF);
 						inventory.setVisible(true);
 						mainFrame.setVisible(false);
 					} catch (Exception e) {
