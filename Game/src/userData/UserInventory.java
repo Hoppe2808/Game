@@ -9,6 +9,7 @@ public class UserInventory {
 	
 	public UserInventory(){
 		this.space = 20;
+		this.equippedWeapon = null;
 	}
 	public void addItem(Item item){
 		if (items.size() < space){

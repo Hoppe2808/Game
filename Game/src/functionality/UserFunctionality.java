@@ -28,8 +28,15 @@ public class UserFunctionality {
 	public void setuI(UserInventory uI) {
 		this.uI = uI;
 	}
-	public void addItemToInventory(Item item){
+	public Item getEquippedWeapon(){
+		return this.uI.getEquippedWeapon();
+	}
+	public void setEquippedWeapon(Item weap){
+		this.uI.setEquippedWeapon(weap);
+	}
+	public Item addItemToInventory(Item item){
 		uI.addItem(item);
+		return item;
 	}
 	public int getUserHealthCurrent(){
 		return uS.getCurHP();

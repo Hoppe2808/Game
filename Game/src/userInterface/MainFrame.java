@@ -66,6 +66,7 @@ public class MainFrame extends JFrame {
 	private JLabel lblNewLabel_1;
 	private JLabel lblPlayer;
 	private JLabel lblXp;
+	private JLabel lblEquipWeapon;
 
 	/**
 	 * Create the frame.
@@ -184,7 +185,7 @@ public class MainFrame extends JFrame {
 		lblWeapon.setBounds(497, 119, 54, 14);
 		contentPane.add(lblWeapon);
 		
-		JLabel lblEquipWeapon = new JLabel("New label");
+		lblEquipWeapon = new JLabel();
 		lblEquipWeapon.setBounds(561, 119, 46, 14);
 		contentPane.add(lblEquipWeapon);
 	}
@@ -202,12 +203,6 @@ public class MainFrame extends JFrame {
 		picLabel.setIcon(icon);
 		lblMobname.setText(curMob.getName());
 		lblMobDamage.setText("Mob Damage: " + curMob.getDamage());
-	}
-	public void updatePlayerHealth(){
-		//TODO Create method
-	}
-	public void updateMobHealth(){
-		//TODO create method
 	}
 
 	private class SwingAction extends AbstractAction {
@@ -234,7 +229,12 @@ public class MainFrame extends JFrame {
 		if (curMob.getHealth() == 0){
 			if (drop(curMob.getDropChance())){
 				System.out.println("Item gotten");
-				uF.addItemToInventory(iF.getRandomItem());
+				Item droppedItem = uF.addItemToInventory(iF.getRandomItem());
+				if (droppedItem.getType() == "Weapon") {
+					if (uF.getEquippedWeapon() == null){
+						uF.setEquippedWeapon(droppedItem);
+					}
+				}
 			}
 			uF.addExp(0, curMob.getExp());
 			makeNewMob();
@@ -245,6 +245,7 @@ public class MainFrame extends JFrame {
 				levelUp(maxXp);
 			}
 		}
+		lblEquipWeapon.setText(uF.getEquippedWeapon().getName());
 	}
 	private void progressBarColor() {
 		if (userCurHealth <= userMaxHealth/2){
