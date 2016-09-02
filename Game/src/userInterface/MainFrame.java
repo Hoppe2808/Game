@@ -56,6 +56,7 @@ public class MainFrame extends JFrame {
 	JLabel lblLevel;
 	JLabel lblDmg;
 	JLabel lblArmor;
+	JLabel lblMessage;
 	int userCurHealth;
 	int userMaxHealth;
 	JProgressBar progressBar;
@@ -119,8 +120,6 @@ public class MainFrame extends JFrame {
 		UIManager.put("ProgressBar2.selectionBackground", Color.BLACK);
 		UIManager.put("ProgressBar2.selectionForeground", Color.BLACK);
 		
-		lblMobname = new JLabel(curMob.getName());
-		panel_3.add(lblMobname);
 		progressBar2 = new JProgressBar();
 		progressBar2.setMaximum(curMob.getHealth());
 		progressBar2.setStringPainted(true);
@@ -162,7 +161,7 @@ public class MainFrame extends JFrame {
 		lblArmor = new JLabel("Armor: " + uF.getUserArmor());
 		playerStats.add(lblArmor);
 		
-		lblNewLabel_1 = new JLabel("Enemies");
+		lblNewLabel_1 = new JLabel(curMob.getName());
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblNewLabel_1.setBounds(144, 0, 157, 27);
 		contentPane.add(lblNewLabel_1);
@@ -186,8 +185,12 @@ public class MainFrame extends JFrame {
 		contentPane.add(lblWeapon);
 		
 		lblEquipWeapon = new JLabel();
-		lblEquipWeapon.setBounds(561, 119, 46, 14);
+		lblEquipWeapon.setBounds(561, 119, 146, 14);
 		contentPane.add(lblEquipWeapon);
+		
+		lblMessage = new JLabel();
+		lblMessage.setBounds(497, 475, 300, 14);
+		contentPane.add(lblMessage);
 	}
 	
 	public void makeNewMob(){
@@ -201,7 +204,7 @@ public class MainFrame extends JFrame {
 		Image scaledImage = mobPic.getScaledInstance(459,429,Image.SCALE_SMOOTH);
 		ImageIcon icon = new ImageIcon(scaledImage);
 		picLabel.setIcon(icon);
-		lblMobname.setText(curMob.getName());
+		lblNewLabel_1.setText(curMob.getName());
 		lblMobDamage.setText("Mob Damage: " + curMob.getDamage());
 	}
 
@@ -215,6 +218,7 @@ public class MainFrame extends JFrame {
 		}
 	}
 	private void attackFlow() {
+		lblMessage.setText("");
 		progressBar.setBackground(Color.gray);
 		progressBar2.setBackground(Color.gray);
 		curMob.setHealth(-damageCalculation(uF.getUserDMG(), 0));
@@ -228,13 +232,16 @@ public class MainFrame extends JFrame {
 		progressBar2.setValue(curMob.getHealth());
 		if (curMob.getHealth() == 0){
 			if (drop(curMob.getDropChance())){
-				System.out.println("Item gotten");
 				Item droppedItem = uF.addItemToInventory(iF.getRandomItem());
+				lblMessage.setText("Monster died and dropped an item: " + droppedItem.getName());
 				if (droppedItem.getType() == "Weapon") {
 					if (uF.getEquippedWeapon() == null){
 						uF.setEquippedWeapon(droppedItem);
+						lblDmg.setText("DMG: " + uF.getUserDMG());
 					}
 				}
+			} else {
+				lblMessage.setText("Monster died!");
 			}
 			uF.addExp(0, curMob.getExp());
 			makeNewMob();

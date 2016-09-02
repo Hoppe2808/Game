@@ -50,7 +50,14 @@ public class UserFunctionality {
 		}
 	}
 	public int getUserDMG(){
-		return uS.getBaseDmg();
+		int damage;
+		if(!(uI.getEquippedWeapon() == null)){
+			Item weapon = uI.getEquippedWeapon();
+			damage = uS.getBaseDmg() + weapon.getMainStat();
+		} else {
+			damage = uS.getBaseDmg();
+		}
+		return damage;
 	}
 	public void setUserDMG(int dmg){
 		uS.setBaseDmg(dmg);
