@@ -2,6 +2,7 @@ package userInterface;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Image;
@@ -43,7 +44,6 @@ public class MainFrame extends JFrame {
 
 	private MainFrame mainFrame = this;
 	private JPanel contentPane;
-	private JPanel playerPanel;
 	private JPanel playerStats;
 	private JPanel playerActions;
 	private UserFunctionality uF;
@@ -78,31 +78,17 @@ public class MainFrame extends JFrame {
 		userCurHealth = uF.getUserHealthCurrent();
 		userMaxHealth = uF.getUserHealthMax();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 900, 600);
+		setBounds(100, 100, 900, 630);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		playerActions = new JPanel();
-		playerPanel = new JPanel();
-		playerPanel.setBounds(5, 509, 874, 47);
-		playerPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		playerPanel.add(playerActions, BorderLayout.EAST);
-		contentPane.add(playerPanel);
+		
 		
 		UIManager.put("ProgressBar.background", Color.GREEN);
 		UIManager.put("ProgressBar.foreground", Color.BLUE);
 		UIManager.put("ProgressBar.selectionBackground", Color.BLACK);
 		UIManager.put("ProgressBar.selectionForeground", Color.BLACK);
-		
-		JButton btnFightButton = new JButton("Fight");
-		btnFightButton.setAction(action);
-		playerActions.add(btnFightButton);
-		playerActions.getRootPane().setDefaultButton(btnFightButton);
-		
-		JButton btnInventoryButton = new JButton("Inventory");
-		btnInventoryButton.addActionListener(new InventoryAction());
-		playerActions.add(btnInventoryButton);
 		
 //		JPanel panel_2 = new JPanel();
 //		contentPane.add(panel_2, BorderLayout.CENTER);
@@ -111,16 +97,12 @@ public class MainFrame extends JFrame {
 //		panel_2.add(lblLevel);
 		
 		JPanel panel_3 = new JPanel();
-		panel_3.setBounds(0, 31, 464, 27);
+		panel_3.setBounds(0, 31, 464, 39);
 		contentPane.add(panel_3);
 		curMob = mF.getRandomMob(1);
 		
-		UIManager.put("ProgressBar2.background", Color.GREEN);
-		UIManager.put("ProgressBar2.foreground", Color.BLUE);
-		UIManager.put("ProgressBar2.selectionBackground", Color.BLACK);
-		UIManager.put("ProgressBar2.selectionForeground", Color.BLACK);
-		
 		progressBar2 = new JProgressBar();
+		progressBar2.setPreferredSize(new Dimension(300, 30));
 		progressBar2.setMaximum(curMob.getHealth());
 		progressBar2.setStringPainted(true);
 		progressBar2.setString(Integer.toString(curMob.getHealth()));
@@ -141,12 +123,10 @@ public class MainFrame extends JFrame {
 		contentPane.add(mobPanel);
 		
 		playerStats = new JPanel();
-		playerStats.setBounds(497, 31, 343, 27);
+		playerStats.setBounds(497, 31, 343, 60);
 		contentPane.add(playerStats);
-		
-		lblLevel = new JLabel("Level: " + uF.getLevel());
-		playerStats.add(lblLevel);
 		progressBar = new JProgressBar();
+		progressBar.setPreferredSize(new Dimension(300, 30));
 		progressBar.setStringPainted(true);
 		progressBar.setString(Integer.toString(userCurHealth));
 		playerStats.add(progressBar);
@@ -172,25 +152,67 @@ public class MainFrame extends JFrame {
 		contentPane.add(lblPlayer);
 		
 		lblXp = new JLabel("Experience: " + uF.getExp()[0] + "/" + uF.getExp()[1]);
-		lblXp.setBounds(497, 69, 191, 14);
+		lblXp.setBounds(497, 99, 191, 14);
 		contentPane.add(lblXp);
 		
 		JLabel lblEquipment = new JLabel("Equipment");
 		lblEquipment.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblEquipment.setBounds(497, 94, 343, 14);
+		lblEquipment.setBounds(497, 124, 343, 19);
 		contentPane.add(lblEquipment);
 		
 		JLabel lblWeapon = new JLabel("Weapon:");
-		lblWeapon.setBounds(497, 119, 54, 14);
+		lblWeapon.setBounds(497, 159, 54, 15);
 		contentPane.add(lblWeapon);
 		
 		lblEquipWeapon = new JLabel();
-		lblEquipWeapon.setBounds(561, 119, 146, 14);
+		lblEquipWeapon.setBounds(561, 159, 146, 15);
 		contentPane.add(lblEquipWeapon);
 		
+		JLabel lblHelmet = new JLabel("Helmet:");
+		lblHelmet.setBounds(497, 199, 54, 15);
+		contentPane.add(lblHelmet);
+		
+		JLabel lblChest = new JLabel("Chest:");
+		lblChest.setBounds(497, 239, 54, 15);
+		contentPane.add(lblChest);
+		
+		JLabel lblGloves = new JLabel("Gloves:");
+		lblGloves.setBounds(497, 279, 54, 15);
+		contentPane.add(lblGloves);
+		
+		JLabel lblPants = new JLabel("Pants:");
+		lblPants.setBounds(497, 319, 54, 15);
+		contentPane.add(lblPants);
+		
+		JLabel lblBoots = new JLabel("Boots:");
+		lblBoots.setBounds(497, 359, 54, 15);
+		contentPane.add(lblBoots);
+		
+		JLabel lblTrinket = new JLabel("Trinket:");
+		lblTrinket.setBounds(497, 399, 54, 15);
+		contentPane.add(lblTrinket);
+		
 		lblMessage = new JLabel();
-		lblMessage.setBounds(497, 475, 300, 14);
+		lblMessage.setBounds(497, 475, 300, 15);
 		contentPane.add(lblMessage);
+		playerActions = new JPanel();
+		playerActions.setBounds(362, 504, 216, 70);
+		contentPane.add(playerActions);
+		
+		JButton btnFightButton = new JButton("Fight");
+		btnFightButton.setPreferredSize(new Dimension(100, 60));
+		btnFightButton.setAction(action);
+		playerActions.add(btnFightButton);
+		playerActions.getRootPane().setDefaultButton(btnFightButton);
+		
+		JButton btnInventoryButton = new JButton("Inventory");
+		btnInventoryButton.setPreferredSize(new Dimension(100, 60));
+		btnInventoryButton.addActionListener(new InventoryAction());
+		playerActions.add(btnInventoryButton);
+		
+		lblLevel = new JLabel("Level: " + uF.getLevel());
+		lblLevel.setBounds(664, 4, 56, 20);
+		contentPane.add(lblLevel);
 	}
 	
 	public void makeNewMob(){
@@ -238,6 +260,7 @@ public class MainFrame extends JFrame {
 					if (uF.getEquippedWeapon() == null){
 						uF.setEquippedWeapon(droppedItem);
 						lblDmg.setText("DMG: " + uF.getUserDMG());
+						lblEquipWeapon.setText(uF.getEquippedWeapon().getName());
 					}
 				}
 			} else {
@@ -252,7 +275,6 @@ public class MainFrame extends JFrame {
 				levelUp(maxXp);
 			}
 		}
-		lblEquipWeapon.setText(uF.getEquippedWeapon().getName());
 	}
 	private void progressBarColor() {
 		if (userCurHealth <= userMaxHealth/2){
